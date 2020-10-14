@@ -855,7 +855,7 @@ this["JST"]["dest_temp/templates/poll/edit-modal.hbs"] = Handlebars.template({"1
     + alias3((helpers.getString || (depth0 && depth0.getString) || alias2).call(alias1,"Reset",{"name":"getString","hash":{},"data":data}))
     + "<i class=\"icon-reset\"></i></button><button id=\"etSave\" class=\"btn btn-default controls\">"
     + alias3((helpers.getString || (depth0 && depth0.getString) || alias2).call(alias1,"Save",{"name":"getString","hash":{},"data":data}))
-    + "<i class=\"icon-save\"></i></button><button id=\"saveNdPublish\" class=\"btn btn-default controls\">"
+    + "<i class=\"icon-save\"></i></button><button id=\"publishBtnHandler\" class=\"btn btn-default controls\">"
     + alias3((helpers.getString || (depth0 && depth0.getString) || alias2).call(alias1,"Publish",{"name":"getString","hash":{},"data":data}))
     + "<i class=\"icon-publish\"></i></button></div></div></div></div></div>";
 },"useData":true});
@@ -879,9 +879,9 @@ this["JST"]["dest_temp/templates/poll/modal.hbs"] = Handlebars.template({"compil
     + alias3((helpers.getString || (depth0 && depth0.getString) || alias2).call(alias1,"Addoption",{"name":"getString","hash":{},"data":data}))
     + "</a></div></div></div><div id=\"contFooter\" class=\"modal-footer\"><div id=\"footerCtrCont\"><button id=\"reset\" class=\"btn btn-default pull-left controls\" type=\"button\">"
     + alias3((helpers.getString || (depth0 && depth0.getString) || alias2).call(alias1,"Reset",{"name":"getString","hash":{},"data":data}))
-    + "</button><button id=\"etSave\" class=\"btn btn-default controls\">"
+    + "</button><button id=\"newPollSave\" class=\"btn btn-default controls\">"
     + alias3((helpers.getString || (depth0 && depth0.getString) || alias2).call(alias1,"Save",{"name":"getString","hash":{},"data":data}))
-    + "</button><button id=\"saveNdPublish\" class=\"btn btn-default controls\">"
+    + "</button><button id=\"publishBtnHandler\" class=\"btn btn-default controls\">"
     + alias3((helpers.getString || (depth0 && depth0.getString) || alias2).call(alias1,"Publish",{"name":"getString","hash":{},"data":data}))
     + "</button></div></div></div></div></div>";
 },"useData":true});
@@ -1571,20 +1571,6 @@ this["JST"]["dest_temp/templates/videoupload/linkvideo.hbs"] = Handlebars.templa
     + "\"><a class=\"deleteanch\">"
     + alias4((helpers.getString || (depth0 && depth0.getString) || alias2).call(alias1,"delete",{"name":"getString","hash":{},"data":data}))
     + "</a></div></div></div>";
-},"useData":true});
-
-this["JST"]["dest_temp/templates/videoupload/livestream.hbs"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
-    return " ";
-},"3":function(container,depth0,helpers,partials,data) {
-    return " <p id=\"messageLayoutVideo\">"
-    + container.escapeExpression((helpers.getString || (depth0 && depth0.getString) || helpers.helperMissing).call(depth0 != null ? depth0 : (container.nullContext || {}),"Vwllbshrshortly",{"name":"getString","hash":{},"data":data}))
-    + "</p> ";
-},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    var stack1;
-
-  return "<div id=\"virtualclassVideo\" class=\"bootstrap virtualclass\" style=\"display: block;\"> "
-    + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? depth0.control : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(3, data, 0),"data":data})) != null ? stack1 : "")
-    + " <div id=\"videoPlayerCont\"></div></div>";
 },"useData":true});
 
 this["JST"]["dest_temp/templates/videoupload/popup.hbs"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
