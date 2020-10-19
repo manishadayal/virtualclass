@@ -72,7 +72,7 @@ module.exports = {
     WhiteboardMessage: 'writable',
     fabric: 'writable',
     LiveStream: 'writable',
-
+    MediaWrapper: 'writable',
   },
   parserOptions: {
     ecmaVersion: 2017,
@@ -82,6 +82,6 @@ module.exports = {
   },
   rules: {
     'max-len': [1, { "code": 120 }],
-    'linebreak-style': ["error", "windows"],
+    'linebreak-style': ["error", "unix"],
    },
 };
