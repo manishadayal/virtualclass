@@ -757,6 +757,7 @@ class MediaAudio {
 
     if (typeof stream !== 'undefined' && stream != null) {
       // console.log('Audio worklet init add module');
+      
       virtualclass.media.audio.Html5Audio.audioContext.audioWorklet.addModule(workletAudioSendBlob).then(() => {
         // console.log('== init audio worklet 3');
         console.log('====> Add stream on media source ', stream);
@@ -766,56 +767,59 @@ class MediaAudio {
         }
 
         this.audioInputForAudioWorklet = virtualclass.media.audio.Html5Audio.audioContext.createMediaStreamSource(stream);
+        this.connectWorkletAudioSend();
 
-        this.filterAudioWorklet = virtualclass.media.audio.Html5Audio.audioContext.createBiquadFilter();
-        this.filterAudioWorklet.type = 'lowpass';
-        this.filterAudioWorklet.frequency.value = 2000;
-        this.audioInputForAudioWorklet.connect(this.filterAudioWorklet);
-
-        this.workletAudioSend = new AudioWorkletNode(virtualclass.media.audio.Html5Audio.audioContext, 'worklet-audio-send');
-
-        this.workletAudioSend.onprocessorerror = (e) => {
-          console.log('this is on process error');
-          virtualclass.media.audio.notifiyMuteAudio();
-          virtualclass.media.audio.isProcessError = true;
-        };
-        this.filterAudioWorklet.connect(this.workletAudioSend);
-        this.workletAudioSend.connect(virtualclass.media.audio.Html5Audio.audioContext.destination);
-
-        virtualclass.gObj.workletAudioSend = this.workletAudioSend;
-
-        const IOAudioSendWorker = new MessageChannel();
-
-        workerAudioSend.postMessage({
-          cmd: 'workerIO',
-          sampleRate: this.Html5Audio.audioContext.sampleRate,
-          uid: virtualclass.gObj.uid,
-        }, [IOAudioSendWorker.port1]);
-
-        // Setup the connection: Port 2 is for worker 2
-        workerIO.postMessage({
-          cmd: 'workerAudioSend',
-        }, [IOAudioSendWorker.port2]);
-
-
-        const workerWorkletAudioSend = new MessageChannel();
-
-        workerAudioSend.postMessage({
-          cmd: 'audioWorkletSend',
-          msg: { repMode: this.repMode },
-        }, [workerWorkletAudioSend.port1]);
-
-        // Setup the connection: Port 2 is for worker 2
-        this.workletAudioSend.port.postMessage({
-          cmd: 'workerAudioSend',
-        }, [workerWorkletAudioSend.port2]);
-
-        virtualclass.media.audio.workerAudioSendOnmessage();
-        // console.log('Audio worklet ready audio worklet module');
       }).catch((e) => {
         virtualclass.media.audio.notifiyMuteAudio();
       });
     }
+  }
+
+  connectWorkletAudioSend() {
+    this.filterAudioWorklet = virtualclass.media.audio.Html5Audio.audioContext.createBiquadFilter();
+    this.filterAudioWorklet.type = 'lowpass';
+    this.filterAudioWorklet.frequency.value = 2000;
+    this.audioInputForAudioWorklet.connect(this.filterAudioWorklet);
+    this.workletAudioSend = new AudioWorkletNode(virtualclass.media.audio.Html5Audio.audioContext, 'worklet-audio-send');
+    
+    this.workletAudioSend.onprocessorerror = (e) => {
+      console.log('this is on process error');
+      virtualclass.media.audio.notifiyMuteAudio();
+      virtualclass.media.audio.isProcessError = true;
+    };
+    
+    this.filterAudioWorklet.connect(this.workletAudioSend);
+    this.workletAudioSend.connect(virtualclass.media.audio.Html5Audio.audioContext.destination);
+
+    virtualclass.gObj.workletAudioSend = this.workletAudioSend;
+
+    const IOAudioSendWorker = new MessageChannel();
+
+    workerAudioSend.postMessage({
+      cmd: 'workerIO',
+      sampleRate: this.Html5Audio.audioContext.sampleRate,
+      uid: virtualclass.gObj.uid,
+    }, [IOAudioSendWorker.port1]);
+
+    // Setup the connection: Port 2 is for worker 2
+    workerIO.postMessage({
+      cmd: 'workerAudioSend',
+    }, [IOAudioSendWorker.port2]);
+
+
+    const workerWorkletAudioSend = new MessageChannel();
+
+    workerAudioSend.postMessage({
+      cmd: 'audioWorkletSend',
+      msg: { repMode: this.repMode },
+    }, [workerWorkletAudioSend.port1]);
+
+    // Setup the connection: Port 2 is for worker 2
+    this.workletAudioSend.port.postMessage({
+      cmd: 'workerAudioSend',
+    }, [workerWorkletAudioSend.port2]);
+
+    this.workerAudioSendOnmessage();
   }
 
   workerAudioSendOnmessage() {

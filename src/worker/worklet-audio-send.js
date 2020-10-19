@@ -17,7 +17,7 @@ const workletAudioSendBlob = URL.createObjectURL(new Blob(['(', function () {
           that.workerAudioSend = e.ports[0];
           that.workerAudioSend.onmessage = that.fromworkerAudioSend;
         }
-      };
+      }
     }
 
     fromworkerAudioSend() {
@@ -29,17 +29,17 @@ const workletAudioSendBlob = URL.createObjectURL(new Blob(['(', function () {
      * the following method is triggered continuously
      */
     process(inputs, outputs) {
-      const input = inputs[0][0];
-      this.audios.set(input, this.position);
-      this.position += input.length;
-      if (this.position >= 4096) {
-        if (Object.prototype.hasOwnProperty.call(this, 'workerAudioSend')) {
+      if(inputs[0].length) {
+        const input = inputs[0][0];
+        this.audios.set(input, this.position);
+        this.position += input.length;
+        if (this.position >= 4096) {
           this.workerAudioSend.postMessage({ cmd: 'rawAudio', msg: this.audios });
+          this.audios = new Float32Array(4096);
+          this.position = 0;
         }
-        this.audios = new Float32Array(4096);
-        this.position = 0;
+        return true;
       }
-      return true;
     }
   }
   registerProcessor('worklet-audio-send', workletAudioSend);
