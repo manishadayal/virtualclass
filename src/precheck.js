@@ -193,18 +193,6 @@ const preCheck = {
     document.querySelector(selector).appendChild(divErr);
   },
 
-  initHandler(selector, currSec, cb) {
-    return;
-    // console.log('initHandler next/prev');
-    const nextButton = document.querySelector(selector);
-
-    if (nextButton != null) {
-      const handler = this.triggerInitHandler.bind(nextButton, currSec, cb);
-      nextButton.addEventListener('click', handler);
-      this.handlers.push({ id: selector, handler });
-    }
-  },
-
   removeAllListener() {
     for (let i = 0; i < this.handlers.length; i++) {
       document.querySelector(this.handlers[i].id).removeEventListener('click', this.handlers[i].handler);
@@ -249,7 +237,6 @@ const preCheck = {
       if (!virtualclass.system.mybrowser.notSuppport) {
         const msg = virtualclass.lang.getString('congreainchrome');
         virtualclass.precheck.createMessage(msgSelector, msg, 'information');
-        virtualclass.precheck.initHandler((`${preCheck} #${this.curr}Buttons .next`), this.curr);
       }
 
     },
@@ -275,8 +262,6 @@ const preCheck = {
       this.measureConnectionSpeed((msg) => {
         document.querySelector(msgSelector).innerHTML = '';
         virtualclass.precheck.createMessage(msgSelector, msg, 'information');
-        virtualclass.precheck.initHandler((`${preCheck} #${this.curr}Buttons .prev`), this.curr);
-        virtualclass.precheck.initHandler((`${preCheck} #${this.curr}Buttons .next`), this.curr);
       });
 
     },
@@ -379,21 +364,7 @@ const preCheck = {
       const testAudio = document.getElementById('vcSpeakerCheckAudio');
       testAudio.loop = true;
       testAudio.play();
-
-      if (!this.playTestAudio) {
-        virtualclass.precheck.initHandler((`${preCheck} #${this.curr}Buttons .prev`), this.curr, () => {
-          // stop the audio
-          testAudio.pause();
-          testAudio.currentTime = 0;
-        });
-
-        virtualclass.precheck.initHandler((`${preCheck} #${this.curr}Buttons .next`), this.curr, () => {
-          // stop the audio
-          testAudio.pause();
-          testAudio.currentTime = 0;
-        });
-        this.playTestAudio = true;
-      }
+      this.playTestAudio = true;
       virtualclass.precheck.cancelAudioGraph();
     },
 
@@ -504,8 +475,7 @@ const preCheck = {
       // if (this.graph != null && this.graph != undefined) {
       // this.graph.microphone.start()
       // }
-      virtualclass.precheck.initHandler((`#preCheckcontainer .precheck #${this.curr}Buttons .prev`), this.curr);
-      virtualclass.precheck.initHandler((`#preCheckcontainer .precheck #${this.curr}Buttons .next`), this.curr);
+      
     },
 
   },
@@ -584,8 +554,7 @@ const preCheck = {
 
     initHandler() {
       const preCheck = '#preCheckcontainer .precheck';
-      virtualclass.precheck.initHandler((`${preCheck} #joinSession .prev`), this.curr);
-
+      
       const joinSession = document.querySelector('#joinSession .next');
       if (joinSession != null) {
         joinSession.removeEventListener('click', this.joinSession.bind(this));
