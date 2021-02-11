@@ -2455,7 +2455,7 @@
     },
 
     sendSpeedByMobile(speed) {
-      if (virtualclass.system.desktop === 'mobTab') {
+      if (virtualclass.system.device === 'mobTab') {
         ioAdapter.sendSpeed(speed);
       }
     },
